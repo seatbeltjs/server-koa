@@ -1,0 +1,16 @@
+{
+  "name": "@seatbelt/server-koa",
+  "version": "0.0.1",
+  "description": "SeatbeltJS koa server",
+  "main": "index.ts",
+  "keywords": [
+    "seatbelt",
+    "koa",
+    "server"
+  ],
+  "author": "Thomas Meadows",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.2.0"
+  }
+}
