@@ -1,4 +1,4 @@
-import { Log } from '../../log';
+import { Log } from '../core/src/log';
 const body = require('koa-json-body');
 
 export function DKoa(): any {

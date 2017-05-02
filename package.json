@@ -11,6 +11,17 @@
   "author": "Thomas Meadows",
   "license": "MIT",
   "dependencies": {
-    "koa": "^2.2.0"
+    "@types/koa": "^2.0.39",
+    "koa": "^2.2.0",
+    "koa-router": "^7.1.1",
+    "koa-json-body": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.39",
+    "@types/node": "^7.0.15",
+    "tslint": "^4.5.1",
+    "tslint-eslint-rules": "^3.5.0",
+    "tslint-microsoft-contrib": "^4.0.1",
+    "typescript": "^2.2.1"
   }
 }
