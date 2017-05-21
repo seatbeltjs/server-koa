@@ -9,11 +9,8 @@
     "sourceMap": false,
     "inlineSources": false,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "types": [
-      "node",
-      "restify"
-    ]
+    "noImplicitUseStrict": true,
+    "allowSyntheticDefaultImports": true
   },
   "inclide": [
     "./**/*.ts"

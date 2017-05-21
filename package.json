@@ -2,7 +2,8 @@
   "name": "@seatbelt/server-koa",
   "version": "0.0.1",
   "description": "SeatbeltJS koa server",
-  "main": "index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.ts",
   "keywords": [
     "seatbelt",
     "koa",
@@ -11,13 +12,14 @@
   "author": "Thomas Meadows",
   "license": "MIT",
   "dependencies": {
-    "@types/koa": "^2.0.39",
     "koa": "^2.2.0",
-    "koa-router": "^7.1.1",
-    "koa-json-body": "^5.3.0"
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.1.1"
   },
   "devDependencies": {
     "@types/koa": "^2.0.39",
+    "@types/koa-bodyparser": "^3.0.23",
+    "@types/koa-router": "^7.0.22",
     "@types/node": "^7.0.15",
     "tslint": "^4.5.1",
     "tslint-eslint-rules": "^3.5.0",
