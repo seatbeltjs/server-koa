@@ -3,18 +3,18 @@
 /// <reference types="koa-bodyparser" />
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
-import { Server } from '@seatbelt/core/lib/server';
+import { ServerPlugin } from '@seatbelt/core/plugins';
 import { Log } from '@seatbelt/core';
 export interface IServerConfig {
     port?: number;
 }
-export declare class KoaServer implements Server.BaseServer {
+export declare class KoaServer implements ServerPlugin.BaseServer {
     log: Log;
     server: Koa;
     port: number;
     router: Router;
     constructor(config?: IServerConfig);
     conformServerControllerToSeatbeltController: Function;
-    config: Server.Config;
-    init: Server.Init;
+    config: ServerPlugin.Config;
+    init: ServerPlugin.Init;
 }
