@@ -2,6 +2,7 @@ import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import * as bodyParser from 'koa-bodyparser';
 import { ServerPlugin } from '@seatbelt/core/plugins';
+import { Request, Response } from '@seatbelt/core';
 import { Log } from '@seatbelt/core';
 
 export interface IServerConfig {
@@ -26,13 +27,23 @@ export class KoaServer implements ServerPlugin.BaseServer {
   }
 
   public conformServerControllerToSeatbeltController: Function = function (route: ServerPlugin.Route, ctx: Koa.Context) {
-    const seatbeltResponse: ServerPlugin.Response = {
-      send: (status: number, body: Object) => {
-         ctx.body = body;
-      }
+    const send = (status: number, body: Object) => {
+      ctx.status = status;
+      ctx.body = body;
     };
 
-    const seatbeltRequest: ServerPlugin.Request = {
+    const seatbeltResponse: Response.Base = {
+      send,
+      ok: (body: Object) => send(200, body),
+      created: (body: Object) => send(201, body),
+      badRequest: (body: Object) => send(400, body),
+      unauthorized: (body: Object) => send(401, body),
+      forbidden: (body: Object) => send(403, body),
+      notFound: (body: Object) => send(404, body),
+      serverError: (body: Object) => send(500, body)
+    };
+
+    const seatbeltRequest: Request.Base = {
       allParams: Object.assign(
         {},
         typeof ctx.request.body === 'object' ? ctx.request.body : {},
