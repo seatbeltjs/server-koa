@@ -2,23 +2,22 @@ import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import * as bodyParser from 'koa-bodyparser';
 import { ServerPlugin } from '@seatbelt/core/plugins';
-import { Request, Response } from '@seatbelt/core';
-import { Log } from '@seatbelt/core';
+import { Log, Route } from '@seatbelt/core';
 
-export interface IServerConfig {
+export interface ServerConfigInterface {
   port?: number;
 }
 
 @ServerPlugin.Register({
   name: 'KoaServer'
 })
-export class KoaServer implements ServerPlugin.BaseServer {
+export class KoaServer implements ServerPlugin.BaseInterface {
   private log: Log = new Log('KoaServer');
   public server: Koa = new Koa();
   public port: number = process.env.port || 3000;
   public router: Router = new Router();
 
-  public constructor(config?: IServerConfig) {
+  public constructor(config?: ServerConfigInterface) {
     if (config) {
       if (config.port && typeof config.port === 'number') {
         this.port = config.port;
@@ -26,13 +25,13 @@ export class KoaServer implements ServerPlugin.BaseServer {
     }
   }
 
-  public conformServerControllerToSeatbeltController: Function = function (route: ServerPlugin.Route, ctx: Koa.Context) {
+  public conformServerControllerToSeatbeltController: Function = function (route: ServerPlugin.RouteInterface, ctx: Koa.Context) {
     const send = (status: number, body: Object) => {
       ctx.status = status;
       ctx.body = body;
     };
 
-    const seatbeltResponse: Response.Base = {
+    const seatbeltResponse: Route.Response.BaseInterface = {
       send,
       ok: (body: Object) => send(200, body),
       created: (body: Object) => send(201, body),
@@ -43,7 +42,7 @@ export class KoaServer implements ServerPlugin.BaseServer {
       serverError: (body: Object) => send(500, body)
     };
 
-    const seatbeltRequest: Request.Base = {
+    const seatbeltRequest: Route.Request.BaseInterface = {
       allParams: Object.assign(
         {},
         typeof ctx.request.body === 'object' ? ctx.request.body : {},
@@ -60,12 +59,12 @@ export class KoaServer implements ServerPlugin.BaseServer {
     );
   };
 
-  public config: ServerPlugin.Config = function(seatbelt: any) {
-    const routes: ServerPlugin.Route[] = seatbelt.plugins.route;
+  public config: ServerPlugin.Config = function(seatbelt: any, cb: Function) {
+    const routes: ServerPlugin.RouteInterface[] = seatbelt.plugins.route;
 
     this.server.use(bodyParser({ enableTypes: ['json'] }));
     if (routes && Array.isArray(routes)) {
-      routes.forEach((route: ServerPlugin.Route) => {
+      routes.forEach((route: ServerPlugin.RouteInterface) => {
         route['__routeConfig'].type.forEach((eachType: string) => {
           route['__routeConfig'].path.forEach((eachPath: string) => {
             this.router[eachType.toLowerCase()](eachPath, (ctx: Koa.Context) => this.conformServerControllerToSeatbeltController(route, ctx));
@@ -73,6 +72,7 @@ export class KoaServer implements ServerPlugin.BaseServer {
         });
       });
     }
+    cb();
   };
 
   public init: ServerPlugin.Init  = function() {
